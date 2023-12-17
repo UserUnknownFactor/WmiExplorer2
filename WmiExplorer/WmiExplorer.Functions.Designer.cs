@@ -1217,9 +1217,16 @@ namespace WmiExplorer
             script.Append("Write-Output \"CLASS    : $classname \"").AppendLine();
             script.Append("Write-Output \"=====================================\"").AppendLine();
             script.AppendLine();
-            script.Append("Get-WmiObject -Class $classname -ComputerName $computer -Namespace $namespace |").AppendLine();
-            script.Append("    Select-Object * -ExcludeProperty PSComputerName, Scope, Path, Options, ClassPath, Properties, SystemProperties, Qualifiers, Site, Container |").AppendLine();
-            script.Append("    Format-List -Property [a-z]*").AppendLine();
+            script.Append("if ((Get-Variable PSVersionTable -ValueOnly).PSVersion.Major -le 2) {");
+            script.Append("    # Powershell 2.0+; deprecated from 3.0+").AppendLine();
+            script.Append("    Get-WmiObject -Class $classname -ComputerName $computer -Namespace $namespace |").AppendLine();
+            script.Append("        Select-Object * -ExcludeProperty PSComputerName, Scope, Path, Options, ClassPath, Properties, SystemProperties, Qualifiers, Site, Container |").AppendLine();
+            script.Append("} else {");
+            script.Append("    # Powershell 3.0+").AppendLine();
+            script.Append("    Get-CimInstance -ClassName $classname -ComputerName $computer -Namespace $namespace |").AppendLine();
+            script.Append("         Select-Object * -ExcludeProperty PSComputerName, PSShowComputerName, CimClass, CimInstanceProperties, CimInstanceProperties, CimSystemProperties |").AppendLine();
+            script.Append("}");
+            script.Append("Format-List -Property [a-z]*").AppendLine();
 
             textBoxScript.Text = script.ToString();
         }
@@ -2672,6 +2679,7 @@ namespace WmiExplorer
 
         private void UpdateCheck()
         {
+            if (Convert.ToInt32(Settings.Default.UpdateCheckIntervalInDays) <= 0) return;
             if (Settings.Default.LastUpdateCheck > DateTime.Now.AddDays((-(Convert.ToInt32(Settings.Default.UpdateCheckIntervalInDays)))))
             {
                 Log("Update Check - Last Update Check was within configured interval: " +
