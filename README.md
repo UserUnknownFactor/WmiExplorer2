@@ -1,16 +1,14 @@
-# Download: https://git.io/wmie2
-
+# WMI Explorer 2
 
 WMI Explorer is a utility intended to provide the ability to browse and view WMI namespaces/classes/instances/properties in a single pane of view and is inspired by the PowerShell based WMI Explorer written by Marc.
 
-As someone who works with Configuration Manager (SCCM), I spend a lot of time in wbemtest trying to find things which is very time consuming. I started this project with the intention to combine the features of currently available WMI Explorers, and to make it easier and quicker to find what you're looking for in WMI.
+As someone who works with Microsoft System Center Configuration Manager (SCCM), I spend a lot of time in wbemtest trying to find things which is very time consuming. I started this project with the intention to combine the features of currently available WMI Explorers, and to make it easier and quicker to find what you're looking for in WMI.
 
 # Requirements
 
-* Microsoft .NET Framework 4.0 Full or .NET Framework 4.5.1
+* Microsoft .NET Framework 4.8
 * Minimum display resolution: 1024x768
 * Administrator rights to view some WMI objects
-* (Optional) Internet access for automatic update check
 
 # Features
 
